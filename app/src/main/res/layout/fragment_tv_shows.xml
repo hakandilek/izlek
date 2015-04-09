@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.github.pedrovgs.effectiveandroidui.ui.activity.MainActivity$PlaceholderFragment"
+    tools:context="me.dilek.izlek.ui.activity.MainActivity$PlaceholderFragment"
     style="@style/AppTheme.RootView">
 
     <!-- ProgressBar -->

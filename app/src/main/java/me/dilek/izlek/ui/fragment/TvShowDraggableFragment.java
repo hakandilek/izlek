@@ -10,7 +10,9 @@ import com.github.pedrovgs.DraggableView;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-@EFragment
+import me.dilek.izlek.R;
+
+@EFragment(R.layout.fragment_draggable_tv_show)
 public class TvShowDraggableFragment extends Fragment {
 
     private static final String EXTRA_TV_SHOW = "extra_tv_show";

@@ -3,32 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
     android:baselineAligned="false"
-    tools:context="com.github.pedrovgs.effectiveandroidui.ui.activity.MainActivity">
+    android:orientation="horizontal"
+    tools:context="me.dilek.izlek.ui.activity.MainActivity">
 
     <!-- TvShowCatalogFragment -->
 
-    <!--
-        TODO: TvShowCatalogFragment
-        <fragment
-            android:id="@+id/f_tv_show_catalog"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginRight="@dimen/secondary_margin"
-            class="me.dilek.izlek.ui.fragment.TvShowCatalogFragment"
-            tools:context="me.dilek.izlek.ui.activity.MainActivity_" />
-    -->
+    <fragment
+        android:id="@+id/f_tv_show_catalog"
+        class="me.dilek.izlek.ui.fragment.TvShowCatalogFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="@dimen/secondary_margin"
+        android:layout_weight="1"
+        tools:context="me.dilek.izlek.ui.activity.MainActivity_" />
 
     <!-- TvShowFragment -->
 
     <fragment
         android:id="@+id/f_tv_show"
+        class="me.dilek.izlek.ui.fragment.TvShowFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        class="me.dilek.izlek.ui.fragment.TvShowFragment"
         tools:context="me.dilek.izlek.ui.activity.MainActivity_" />
 
 </LinearLayout>
