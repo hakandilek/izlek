@@ -3,24 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="me.dilek.izlek.ui.activity.MainActivity"
+    tools:context=".ui.activity.MainActivity_"
     tools:ignore="MergeRootFrame">
 
     <!-- TvShowCatalogFragment -->
     <fragment
         android:id="@+id/f_tv_show_catalog"
-        class="me.dilek.izlek.ui.fragment.TvShowCatalogFragment"
+        class="me.dilek.izlek.ui.fragment.TvShowCatalogFragment_"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="me.dilek.izlek.ui.activity.MainActivity" />
+        tools:context=".ui.activity.MainActivity_" />
 
     <!-- TvShowDraggableFragment -->
 
     <fragment
         android:id="@+id/f_tv_show_draggable"
-        class="me.dilek.izlek.ui.fragment.TvShowDraggableFragment"
+        class="me.dilek.izlek.ui.fragment.TvShowDraggableFragment_"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="me.dilek.izlek.ui.activity.MainActivity" />
+        tools:context=".ui.activity.MainActivity_" />
 
 </FrameLayout>

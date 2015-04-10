@@ -1,56 +1,115 @@
 package me.dilek.izlek.ui.fragment;
 
-import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.Collection;
+
 import me.dilek.izlek.R;
 import me.dilek.izlek.domain.TvShow;
+import me.dilek.izlek.ui.presenter.TvShowCatalogPresenter;
+import me.dilek.izlek.ui.renderer.TvShowCollection;
 import me.dilek.izlek.util.ToastUtils;
 
 @EFragment(R.layout.fragment_tv_shows)
-public class TvShowCatalogFragment extends Fragment {
+public class TvShowCatalogFragment extends Fragment implements TvShowCatalogPresenter.View {
 
     private static final String EXTRA_TV_SHOW_CATALOG = "extra_tv_show_catalog";
 
-    /* TODO: presenters
+    @Bean
     TvShowCatalogPresenter tvShowCatalogPresenter;
+
+    /* TODO: renderer
     TvShowRendererAdapterFactory tvShowRendererAdapterFactory;
 
     private RendererAdapter<TvShow> adapter;
-    private TvShowCollection tvShows = new TvShowCollection();
 
     */
 
     @ViewById
-    public ProgressBar pb_loading;
+    ProgressBar pb_loading;
 
     @ViewById
-    public GridView gv_tv_shows;
+    GridView gv_tv_shows;
 
     @ViewById
-    public View v_empty_case;
+    View v_empty_case;
 
-    /*
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    private TvShowCollection tvShows = new TvShowCollection();
+
+    @AfterViews
+    @Background
+    public void initialize() {
         initializeGridView();
         tvShowCatalogPresenter.setView(this);
         tvShowCatalogPresenter.initialize();
     }
 
-*/
+    @Override
+    public void renderVideos(Collection<TvShow> tvShows) {
+
+    }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void hideLoading() {
+        pb_loading.setVisibility(View.GONE);
     }
+
+    @Override
+    public void showLoading() {
+        pb_loading.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void updateTitleWithCountOfTvShows(int size) {
+
+    }
+
+    @Override
+    public boolean isAlreadyLoaded() {
+        return false;
+    }
+
+    @Override
+    public void showConnectionErrorMessage() {
+
+    }
+
+    @Override
+    public void showEmptyCase() {
+        v_empty_case.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showDefaultTitle() {
+        getActivity().setTitle(R.string.app_name);
+    }
+
+    @Override
+    public boolean isReady() {
+        return isAdded();
+    }
+
+    public void showTvShowTitleAsMessage(TvShow tvShow) {
+        ToastUtils.showShortMessage(tvShow.getTitle(), getActivity());
+    }
+
+    private void initializeGridView() {
+        /*
+        adapter = tvShowRendererAdapterFactory.getTvShowRendererAdapter(tvShows);
+        gv_tv_shows.setAdapter(adapter);
+        */
+    }
+
+
 
     /* TODO: resume/pause
     @Override
@@ -91,14 +150,6 @@ public class TvShowCatalogFragment extends Fragment {
     }
     */
 
-    public void hideLoading() {
-        pb_loading.setVisibility(View.GONE);
-    }
-
-    public void showLoading() {
-        pb_loading.setVisibility(View.VISIBLE);
-    }
-
     /* TODO: rendering
     @Override
     public void renderVideos(final Collection<TvShow> tvShows) {
@@ -120,32 +171,10 @@ public class TvShowCatalogFragment extends Fragment {
     }
 
 */
-
-    public void showEmptyCase() {
-        v_empty_case.setVisibility(View.VISIBLE);
-    }
-
-    public void showDefaultTitle() {
-        getActivity().setTitle(R.string.app_name);
-    }
-
-    public void showTvShowTitleAsMessage(TvShow tvShow) {
-        ToastUtils.showShortMessage(tvShow.getTitle(), getActivity());
-    }
-
-    public boolean isReady() {
-        return isAdded();
-    }
-
     /* TODO: init/update/refresh
     @Override
     public boolean isAlreadyLoaded() {
         return adapter.getCount() > 0;
-    }
-
-    private void initializeGridView() {
-        adapter = tvShowRendererAdapterFactory.getTvShowRendererAdapter(tvShows);
-        gv_tv_shows.setAdapter(adapter);
     }
 
     private void updatePresenterWithSavedTvShow(TvShowCollection tvShowCollection) {
