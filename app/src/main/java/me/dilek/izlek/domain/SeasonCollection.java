@@ -32,8 +32,8 @@ public class SeasonCollection implements Iterable<Season>, Serializable {
 
     public void addEpisode(int season, int episode, String title,
                            String publishDate) {
-        while (seasons.size() < season - 1) {
-            seasons.add(new Season(seasons.size() + 1));
+        while (seasons.size() < season) {
+            seasons.add(new Season(season));
         }
         Season s = seasons.get(season - 1);
         s.addEpisode(episode, title, publishDate);
