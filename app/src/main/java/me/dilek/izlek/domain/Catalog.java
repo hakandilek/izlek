@@ -444,4 +444,8 @@ public class Catalog {
         }
         return result;
     }
+
+    public void addTvShow(TvShow tvShow) {
+        tvShows.add(tvShow);
+    }
 }

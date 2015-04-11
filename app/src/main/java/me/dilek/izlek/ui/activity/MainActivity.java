@@ -15,7 +15,6 @@ import me.dilek.izlek.ui.fragment.TvShowFragment;
 @EActivity(R.layout.activity_main)
 public class MainActivity extends ActionBarActivity {
 
-
     @FragmentById
     TvShowDraggableFragment f_tv_show_draggable;
 
