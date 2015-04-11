@@ -1,7 +1,6 @@
 package me.dilek.izlek.ui.activity;
 
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -26,13 +25,6 @@ public class MainActivity extends ActionBarActivity {
         if (f_tv_show != null && f_tv_show_draggable != null) {
             f_tv_show_draggable.disableSaveInstanceState();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 
 }
