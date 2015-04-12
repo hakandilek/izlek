@@ -5,9 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.pedrogomez.renderers.Renderer;
-
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.SystemService;
 import org.androidannotations.annotations.ViewById;
 
 import me.dilek.izlek.R;
@@ -19,7 +18,10 @@ import me.dilek.izlek.domain.Episode;
  * Created by Hakan Dilek on 12.04.15.
  */
 @EBean
-public class EpisodeRenderer extends Renderer<Episode> {
+public class EpisodeRenderer extends AbstractRenderer<Episode> {
+
+    @SystemService
+    LayoutInflater layoutInflater;
 
     @ViewById(R.id.tv_episode_number)
     TextView tv_episode_number;
@@ -37,21 +39,18 @@ public class EpisodeRenderer extends Renderer<Episode> {
     }
 
     @Override
-    protected void setUpView(View view) {
-    }
-
-    @Override
-    protected void hookListeners(View view) {
-    }
-
-    @Override
     protected View inflate(LayoutInflater layoutInflater, ViewGroup viewGroup) {
         return layoutInflater.inflate(R.layout.row_episode, viewGroup, false);
     }
 
     @Override
-    public void render() {
-        Episode episode = getContent();
+    protected LayoutInflater layoutInflater() {
+        return layoutInflater;
+    }
+
+    @Override
+    protected void update(RendererValue value) {
+        Episode episode = value.content;
         renderEpisodeNumber();
         renderEpisodeTitle(episode);
         renderEpisodePublishDate(episode);

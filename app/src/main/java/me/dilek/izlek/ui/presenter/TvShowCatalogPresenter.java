@@ -4,7 +4,9 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.UiThread;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import me.dilek.izlek.domain.Catalog;
@@ -12,7 +14,6 @@ import me.dilek.izlek.domain.TvShow;
 import me.dilek.izlek.executor.LoadTask;
 import me.dilek.izlek.executor.TaskRunner;
 import me.dilek.izlek.ui.activity.Navigator;
-import me.dilek.izlek.ui.renderer.TvShowCollection;
 
 /**
  * @author Hakan.Dilek
@@ -31,10 +32,10 @@ public class TvShowCatalogPresenter implements Presenter {
 
     private View view;
 
-    private TvShowCollection currentTvShowCollection;
+    private List<TvShow> currentTvShows;
 
-    public TvShowCollection getCurrentTvShows() {
-        return currentTvShowCollection;
+    public List<TvShow> getCurrentTvShows() {
+        return currentTvShows;
     }
 
     public void setView(View view) {
@@ -71,9 +72,9 @@ public class TvShowCatalogPresenter implements Presenter {
      * TvShowCatalogFragment when the fragment lifecycle is restored and there are already loaded tv
      * shows.
      */
-    public void loadCatalog(final TvShowCollection tvShowCollection) {
-        currentTvShowCollection = tvShowCollection;
-        showTvShows(tvShowCollection.cloneList());
+    public void loadCatalog(final List<TvShow> tvShows) {
+        currentTvShows = tvShows;
+        showTvShows(tvShows);
     }
 
     private void loadTvShows() {
@@ -81,17 +82,19 @@ public class TvShowCatalogPresenter implements Presenter {
             view.showLoading();
         }
         executor.run(new LoadTask<Set<TvShow>>() {
-
+            @Override
             public Set<TvShow> load() {
                 return catalog.getTvShows();
             }
 
-            public void onSuccess(final Set<TvShow> tvShows) {
-                currentTvShowCollection = new TvShowCollection(tvShows);
+            @Override
+            public void onLoadSuccess(final Set<TvShow> tvShows) {
+                currentTvShows = new ArrayList<>(tvShows);
                 showTvShows(tvShows);
             }
 
-            public void onError() {
+            @Override
+            public void onError(Exception e) {
                 notifyConnectionError();
             }
         });

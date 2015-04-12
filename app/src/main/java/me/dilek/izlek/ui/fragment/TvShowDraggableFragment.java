@@ -13,8 +13,6 @@ import org.androidannotations.annotations.ViewById;
 
 import me.dilek.izlek.R;
 import me.dilek.izlek.ui.presenter.TvShowPresenter;
-import me.dilek.izlek.ui.renderer.EpisodeCollection;
-import me.dilek.izlek.ui.renderer.EpisodeRendererAdapter;
 
 @EFragment(R.layout.fragment_draggable_tv_show)
 public class TvShowDraggableFragment extends TvShowFragment implements TvShowPresenter.View {
@@ -23,9 +21,6 @@ public class TvShowDraggableFragment extends TvShowFragment implements TvShowPre
 
     @ViewById
     DraggableView draggable_view;
-
-    private EpisodeRendererAdapter adapter;
-    private EpisodeCollection episodeCollection = new EpisodeCollection();
 
     @AfterViews
     @Background

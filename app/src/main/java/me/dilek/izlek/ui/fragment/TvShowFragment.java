@@ -17,14 +17,14 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import me.dilek.izlek.R;
 import me.dilek.izlek.domain.Episode;
 import me.dilek.izlek.ui.presenter.TvShowPresenter;
-import me.dilek.izlek.ui.renderer.EpisodeCollection;
-import me.dilek.izlek.ui.renderer.EpisodeRendererAdapter;
-import me.dilek.izlek.ui.renderer.EpisodeRendererAdapterFactory;
+import me.dilek.izlek.ui.renderer.EpisodeRenderer;
 import me.dilek.izlek.util.ToastUtils;
 
 @EFragment(R.layout.fragment_tv_show)
@@ -33,14 +33,11 @@ public class TvShowFragment extends Fragment implements TvShowPresenter.View {
     @Bean
     TvShowPresenter tvShowPresenter;
 
-    @Bean
-    EpisodeRendererAdapterFactory episodeRendererAdapterFactory;
-
-    private EpisodeRendererAdapter adapter;
-
-    private EpisodeCollection episodeCollection = new EpisodeCollection();
-
     private boolean useSaveInstanceState = true;
+
+    private ListAdapter<Episode> adapter;
+
+    private List<Episode> episodes = new ArrayList<>();
 
     @ViewById
     ImageView iv_fan_art;
@@ -66,7 +63,7 @@ public class TvShowFragment extends Fragment implements TvShowPresenter.View {
         header_tv_show_episodes = (TextView) LayoutInflater.from(getActivity())
                 .inflate(R.layout.header_tv_show_episodes, null);
         lv_episodes.addHeaderView(header_tv_show_episodes);
-        adapter = episodeRendererAdapterFactory.getEpisodeRendererAdapter(episodeCollection);
+        adapter = new ListAdapter<>(episodes, new EpisodeRenderer());
         lv_episodes.setAdapter(adapter);
     }
 
@@ -114,8 +111,8 @@ public class TvShowFragment extends Fragment implements TvShowPresenter.View {
 
     @Override
     public void showEpisodes(final Set<Episode> episodes) {
-        episodeCollection.clear();
-        episodeCollection.addAll(episodes);
+        this.episodes.clear();
+        this.episodes.addAll(episodes);
         adapter.notifyDataSetChanged();
     }
 

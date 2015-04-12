@@ -7,13 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.pedrogomez.renderers.Renderer;
 import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
+import org.androidannotations.annotations.SystemService;
 import org.androidannotations.annotations.ViewById;
 
 import me.dilek.izlek.R;
@@ -25,10 +24,13 @@ import me.dilek.izlek.ui.presenter.TvShowCatalogPresenter;
  * Created by Hakan Dilek on 11.04.15.
  */
 @EBean
-public class TvShowRenderer extends Renderer<TvShow> {
+public class TvShowRenderer extends AbstractRenderer<TvShow> {
 
     @RootContext
     Context context;
+
+    @SystemService
+    LayoutInflater layoutInflater;
 
     @Bean
     TvShowCatalogPresenter tvShowCatalogPresenter;
@@ -42,30 +44,29 @@ public class TvShowRenderer extends Renderer<TvShow> {
     @ViewById(R.id.tv_seasons_counter)
     TextView seasonsCounterTextView;
 
-    @Override
-    protected void setUpView(View rootView) {
-
-    }
-
-    @Override
-    protected void hookListeners(View rootView) {
-
-    }
-
-    @Override
     protected View inflate(LayoutInflater inflater, ViewGroup parent) {
         return inflater.inflate(R.layout.row_tv_show, parent, false);
     }
 
     @Override
-    public void render() {
-        TvShow tvShow = getContent();
+    public void update(RendererValue value) {
+        TvShow tvShow = value.content;
         renderThumbnail(tvShow);
         renderTitle(tvShow);
         renderSeasonCounter(tvShow);
     }
 
+    @Override
+    protected Class getPrototypeClass(TvShow content) {
+        return content.getClass();
+    }
 
+    @Override
+    protected LayoutInflater layoutInflater() {
+        return layoutInflater;
+    }
+
+    /*TODO: click
     @Click(R.id.iv_thumbnail)
     void onThumbnailClicked() {
         tvShowCatalogPresenter.onTvShowThumbnailClicked(getContent());
@@ -75,7 +76,7 @@ public class TvShowRenderer extends Renderer<TvShow> {
     void onBackgroundClicked() {
         tvShowCatalogPresenter.onTvShowClicked(getContent());
     }
-
+    */
     private TvShow renderThumbnail(TvShow tvShow) {
         Picasso.with(context).load(tvShow.getPoster()).into(thumbnailImageView);
         return tvShow;

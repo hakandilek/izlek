@@ -74,4 +74,12 @@ public class TvShow implements Watchable {
         return episodes;
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("TvShow{");
+        sb.append("title='").append(title).append('\'');
+        sb.append(", numberOfSeasons=").append(numberOfSeasons);
+        sb.append('}');
+        return sb.toString();
+    }
 }

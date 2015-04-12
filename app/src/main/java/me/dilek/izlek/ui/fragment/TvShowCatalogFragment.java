@@ -5,8 +5,6 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 
-import com.pedrogomez.renderers.RendererAdapter;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
@@ -19,8 +17,7 @@ import java.util.Collection;
 import me.dilek.izlek.R;
 import me.dilek.izlek.domain.TvShow;
 import me.dilek.izlek.ui.presenter.TvShowCatalogPresenter;
-import me.dilek.izlek.ui.renderer.TvShowCollection;
-import me.dilek.izlek.ui.renderer.TvShowRendererAdapterFactory;
+import me.dilek.izlek.ui.renderer.TvShowRenderer;
 import me.dilek.izlek.util.ToastUtils;
 
 @EFragment(R.layout.fragment_tv_shows)
@@ -31,11 +28,6 @@ public class TvShowCatalogFragment extends Fragment implements TvShowCatalogPres
     @Bean
     TvShowCatalogPresenter tvShowCatalogPresenter;
 
-    @Bean
-    TvShowRendererAdapterFactory tvShowRendererAdapterFactory;
-
-    private RendererAdapter<TvShow> adapter;
-
     @ViewById
     ProgressBar pb_loading;
 
@@ -45,7 +37,10 @@ public class TvShowCatalogFragment extends Fragment implements TvShowCatalogPres
     @ViewById
     View v_empty_case;
 
-    private TvShowCollection tvShows = new TvShowCollection();
+    @Bean
+    TvShowRenderer renderer;
+
+    private ListAdapter<TvShow> adapter;
 
     @AfterViews
     @Background
@@ -55,10 +50,10 @@ public class TvShowCatalogFragment extends Fragment implements TvShowCatalogPres
         tvShowCatalogPresenter.initialize();
     }
 
-    @Override
+    @UiThread
     public void renderVideos(Collection<TvShow> tvShows) {
-        tvShows.clear();
-        tvShows.addAll(tvShows);
+        adapter.clear();
+        adapter.addAll(tvShows);
         adapter.notifyDataSetChanged();
     }
 
@@ -110,7 +105,7 @@ public class TvShowCatalogFragment extends Fragment implements TvShowCatalogPres
 
     @UiThread
     void initializeGridView() {
-        adapter = tvShowRendererAdapterFactory.getTvShowRendererAdapter(tvShows);
+        adapter = new ListAdapter<>(renderer);
         gv_tv_shows.setAdapter(adapter);
     }
 
