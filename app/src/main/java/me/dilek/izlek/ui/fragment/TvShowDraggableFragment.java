@@ -1,44 +1,74 @@
 package me.dilek.izlek.ui.fragment;
 
-import android.app.Fragment;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
+import android.view.View;
 
+import com.github.pedrovgs.DraggableListener;
 import com.github.pedrovgs.DraggableView;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import me.dilek.izlek.R;
+import me.dilek.izlek.ui.presenter.TvShowPresenter;
+import me.dilek.izlek.ui.renderer.EpisodeCollection;
+import me.dilek.izlek.ui.renderer.EpisodeRendererAdapter;
 
 @EFragment(R.layout.fragment_draggable_tv_show)
-public class TvShowDraggableFragment extends Fragment {
+public class TvShowDraggableFragment extends TvShowFragment implements TvShowPresenter.View {
 
     private static final String EXTRA_TV_SHOW = "extra_tv_show";
 
-	/*
-    TvShowPresenter tvShowPresenter;
-
-	ChapterRendererAdapterFactory chapterRendererAdapterFactory;
-
-	private ChapterRendererAdapter adapter;
-	private ChapterAdapteeCollection chapterAdapteeCollection = new ChapterAdapteeCollection();
-	 */
-
-    private boolean useSaveInstanceState = true;
-
     @ViewById
     DraggableView draggable_view;
-    @ViewById
-    ImageView iv_fan_art;
-    @ViewById
-    ListView lv_chapters;
-    @ViewById
-    ProgressBar pb_loading;
 
-    public void disableSaveInstanceState() {
-        useSaveInstanceState = false;
+    private EpisodeRendererAdapter adapter;
+    private EpisodeCollection episodeCollection = new EpisodeCollection();
+
+    @AfterViews
+    @Background
+    public void initialize() {
+        tvShowPresenter.setView(this);
+        initializeListView();
+        initializeDraggableView();
     }
 
+    @UiThread
+    void initializeDraggableView() {
+        draggable_view.post(new Runnable() {
+            @Override
+            public void run() {
+                draggable_view.closeToRight();
+            }
+        });
+        draggable_view.setDraggableListener(new DraggableListener() {
+            @Override
+            public void onMaximized() {
+                //Empty
+            }
+
+            @Override
+            public void onMinimized() {
+                //Empty
+            }
+
+            @Override
+            public void onClosedToLeft() {
+                tvShowPresenter.tvShowClosed();
+            }
+
+            @Override
+            public void onClosedToRight() {
+                tvShowPresenter.tvShowClosed();
+            }
+        });
+    }
+
+    @Override
+    public void showTvShow() {
+        draggable_view.setVisibility(View.VISIBLE);
+        draggable_view.maximize();
+    }
 }

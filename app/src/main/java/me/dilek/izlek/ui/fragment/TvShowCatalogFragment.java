@@ -5,10 +5,13 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 
+import com.pedrogomez.renderers.RendererAdapter;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.Collection;
@@ -17,6 +20,7 @@ import me.dilek.izlek.R;
 import me.dilek.izlek.domain.TvShow;
 import me.dilek.izlek.ui.presenter.TvShowCatalogPresenter;
 import me.dilek.izlek.ui.renderer.TvShowCollection;
+import me.dilek.izlek.ui.renderer.TvShowRendererAdapterFactory;
 import me.dilek.izlek.util.ToastUtils;
 
 @EFragment(R.layout.fragment_tv_shows)
@@ -27,12 +31,10 @@ public class TvShowCatalogFragment extends Fragment implements TvShowCatalogPres
     @Bean
     TvShowCatalogPresenter tvShowCatalogPresenter;
 
-    /* TODO: renderer
+    @Bean
     TvShowRendererAdapterFactory tvShowRendererAdapterFactory;
 
     private RendererAdapter<TvShow> adapter;
-
-    */
 
     @ViewById
     ProgressBar pb_loading;
@@ -55,7 +57,9 @@ public class TvShowCatalogFragment extends Fragment implements TvShowCatalogPres
 
     @Override
     public void renderVideos(Collection<TvShow> tvShows) {
-
+        tvShows.clear();
+        tvShows.addAll(tvShows);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -69,18 +73,15 @@ public class TvShowCatalogFragment extends Fragment implements TvShowCatalogPres
     }
 
     @Override
-    public void updateTitleWithCountOfTvShows(int size) {
-
-    }
-
-    @Override
-    public boolean isAlreadyLoaded() {
-        return false;
+    public void updateTitleWithCountOfTvShows(int counter) {
+        String actionBarTitle = getString(R.string.app_name_with_chapter_counter, counter);
+        getActivity().setTitle(actionBarTitle);
     }
 
     @Override
     public void showConnectionErrorMessage() {
-
+        String connectionError = getString(R.string.connection_error_message);
+        ToastUtils.showShortMessage(connectionError, getActivity());
     }
 
     @Override
@@ -102,14 +103,16 @@ public class TvShowCatalogFragment extends Fragment implements TvShowCatalogPres
         ToastUtils.showShortMessage(tvShow.getTitle(), getActivity());
     }
 
-    private void initializeGridView() {
-        /*
-        adapter = tvShowRendererAdapterFactory.getTvShowRendererAdapter(tvShows);
-        gv_tv_shows.setAdapter(adapter);
-        */
+    @Override
+    public boolean isAlreadyLoaded() {
+        return adapter.getCount() > 0;
     }
 
-
+    @UiThread
+    void initializeGridView() {
+        adapter = tvShowRendererAdapterFactory.getTvShowRendererAdapter(tvShows);
+        gv_tv_shows.setAdapter(adapter);
+    }
 
     /* TODO: resume/pause
     @Override
@@ -148,43 +151,10 @@ public class TvShowCatalogFragment extends Fragment implements TvShowCatalogPres
             updatePresenterWithSavedTvShow(tvShowCollection);
         }
     }
-    */
-
-    /* TODO: rendering
-    @Override
-    public void renderVideos(final Collection<TvShow> tvShows) {
-        this.tvShows.clear();
-        this.tvShows.addAll(tvShows);
-        refreshAdapter();
-    }
-
-    @Override
-    public void updateTitleWithCountOfTvShows(final int counter) {
-        String actionBarTitle = getString(R.string.app_name_with_chapter_counter, counter);
-        getActivity().setTitle(actionBarTitle);
-    }
-
-    @Override
-    public void showConnectionErrorMessage() {
-        String connectionError = getString(R.string.connection_error_message);
-        ToastUtils.showShortMessage(connectionError, getActivity());
-    }
-
-*/
-    /* TODO: init/update/refresh
-    @Override
-    public boolean isAlreadyLoaded() {
-        return adapter.getCount() > 0;
-    }
-
     private void updatePresenterWithSavedTvShow(TvShowCollection tvShowCollection) {
         if (tvShowCollection != null) {
             tvShowCatalogPresenter.loadCatalog(tvShowCollection);
         }
-    }
-
-    private void refreshAdapter() {
-        adapter.notifyDataSetChanged();
     }
     */
 }

@@ -33,6 +33,10 @@ public class TvShowCatalogPresenter implements Presenter {
 
     private TvShowCollection currentTvShowCollection;
 
+    public TvShowCollection getCurrentTvShows() {
+        return currentTvShowCollection;
+    }
+
     public void setView(View view) {
         if (view == null) {
             throw new IllegalArgumentException("You can't set a null view");
@@ -112,6 +116,15 @@ public class TvShowCatalogPresenter implements Presenter {
         }
     }
 
+    public void onTvShowThumbnailClicked(final TvShow tvShow) {
+        navigator.openTvShowDetails(tvShow);
+    }
+
+    public void onTvShowClicked(final TvShow tvShow) {
+        view.showTvShowTitleAsMessage(tvShow);
+    }
+
+
     public interface View {
 
         boolean isReady();
@@ -131,5 +144,7 @@ public class TvShowCatalogPresenter implements Presenter {
         void showEmptyCase();
 
         void showDefaultTitle();
+
+        void showTvShowTitleAsMessage(TvShow tvShow);
     }
 }

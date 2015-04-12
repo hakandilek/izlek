@@ -15,7 +15,7 @@
     <com.github.pedrovgs.DraggableView xmlns:draggable_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/draggable_view"
         draggable_view:top_view_id="@+id/iv_fan_art"
-        draggable_view:bottom_view_id="@+id/lv_chapters"
+        draggable_view:bottom_view_id="@+id/lv_episodes"
         draggable_view:top_view_x_scale_factor="@dimen/x_draggable_scale_factor"
         draggable_view:top_view_y_scale_factor="@dimen/y_draggable_scale_factor"
         draggable_view:top_view_margin_right="@dimen/main_margin"
@@ -25,7 +25,7 @@
         <!-- ListView Chapters -->
 
         <ListView
-            android:id="@+id/lv_chapters"
+            android:id="@+id/lv_episodes"
             android:layout_below="@+id/iv_fan_art"
             style="@style/AppTheme.ListView" />
 
