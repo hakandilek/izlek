@@ -9,6 +9,7 @@
 
         <ImageView
             android:id="@+id/iv_fan_art"
+            android:contentDescription="@string/poster_missing"
             style="@style/AppTheme.Image.TvShowFranArt" />
 
         <!-- ListView Chapters -->
@@ -30,6 +31,7 @@
 
     <ImageView
         android:id="@+id/v_empty_case"
+        android:contentDescription="@string/loading"
         style="@style/AppTheme.EmptyCase" />
 
 

@@ -1,7 +1,10 @@
 package me.dilek.izlek.ui.presenter;
 
+import android.content.Context;
+
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.UiThread;
 
 import java.util.ArrayList;
@@ -18,8 +21,11 @@ import me.dilek.izlek.ui.activity.Navigator;
 /**
  * @author Hakan.Dilek
  */
-@EBean(scope = EBean.Scope.Singleton)
+@EBean
 public class TvShowCatalogPresenter implements Presenter {
+
+    @RootContext
+    Context context;
 
     @Bean
     Navigator navigator;
@@ -120,7 +126,7 @@ public class TvShowCatalogPresenter implements Presenter {
     }
 
     public void onTvShowThumbnailClicked(final TvShow tvShow) {
-        navigator.openTvShowDetails(tvShow);
+        navigator.openTvShowDetails(tvShow, context);
     }
 
     public void onTvShowClicked(final TvShow tvShow) {

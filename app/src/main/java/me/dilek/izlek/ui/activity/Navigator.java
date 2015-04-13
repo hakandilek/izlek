@@ -6,12 +6,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
 import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
 
 import me.dilek.izlek.R;
 import me.dilek.izlek.domain.TvShow;
 import me.dilek.izlek.ui.fragment.TvShowDraggableFragment;
 import me.dilek.izlek.ui.fragment.TvShowFragment;
+
+import static me.dilek.izlek.util.LogUtils.logi;
 
 /**
  * Class to handle navigation between activities.
@@ -21,32 +22,35 @@ import me.dilek.izlek.ui.fragment.TvShowFragment;
 @EBean
 public class Navigator {
 
-    @RootContext
-    Context activityContext;
-
     private TvShowFragment tvShowFragment;
     private TvShowDraggableFragment tvShowDraggableFragment;
 
-    public void openTvShowDetails(TvShow tvShow) {
+    public void openTvShowDetails(TvShow tvShow, Context context) {
 
-        if (canInteractWithFragments()) {
+        if (canInteractWithFragments(context)) {
             showTvShowOnTvShowDraggableFragment(tvShow);
             showTvShowOnTvShowFragment(tvShow);
         } else {
-            openTvShowActivity(tvShow.getTitle());
+            openTvShowActivity(context, tvShow.getTitle());
         }
 
     }
 
 
-    private FragmentManager getFragmentManager() {
-        return ((FragmentActivity) activityContext).getSupportFragmentManager();
+    private FragmentManager getFragmentManager(Context context) {
+        logi("context:" + context);
+        return ((FragmentActivity) context).getSupportFragmentManager();
     }
 
-    private boolean canInteractWithFragments() {
-        tvShowFragment = (TvShowFragment) getFragmentManager().findFragmentById(R.id.f_tv_show);
-        tvShowDraggableFragment =
-                (TvShowDraggableFragment) getFragmentManager().findFragmentById(R.id.f_tv_show_draggable);
+    private boolean canInteractWithFragments(Context context) {
+        if (context == null) return false;
+        FragmentManager fragmentManager = getFragmentManager(context);
+        Fragment f_tv_show = fragmentManager.findFragmentById(R.id.f_tv_show);
+        Fragment f_tv_show_draggable = fragmentManager.findFragmentById(R.id.f_tv_show_draggable);
+        logi("f_tv_show:" + f_tv_show);
+        logi("f_tv_show_draggable:" + f_tv_show_draggable);
+        tvShowFragment = (TvShowFragment) f_tv_show;
+        tvShowDraggableFragment = (TvShowDraggableFragment) f_tv_show_draggable;
 
         return tvShowDraggableFragment != null || tvShowFragment != null;
     }
@@ -75,7 +79,7 @@ public class Navigator {
     /**
      * Open TvShowActivity using a tvShowId.
      */
-    public void openTvShowActivity(final String tvShowId) {
-        TvShowActivity_.intent(activityContext).tvShowId(tvShowId).start();
+    public void openTvShowActivity(Context context, final String tvShowId) {
+        TvShowActivity_.intent(context).tvShowId(tvShowId).start();
     }
 }

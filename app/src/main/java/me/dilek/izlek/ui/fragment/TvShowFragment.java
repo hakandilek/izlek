@@ -24,7 +24,7 @@ import java.util.Set;
 import me.dilek.izlek.R;
 import me.dilek.izlek.domain.Episode;
 import me.dilek.izlek.ui.presenter.TvShowPresenter;
-import me.dilek.izlek.ui.renderer.EpisodeRenderer;
+import me.dilek.izlek.ui.view.EpisodeListAdapter;
 import me.dilek.izlek.util.ToastUtils;
 
 @EFragment(R.layout.fragment_tv_show)
@@ -33,9 +33,10 @@ public class TvShowFragment extends Fragment implements TvShowPresenter.View {
     @Bean
     TvShowPresenter tvShowPresenter;
 
-    private boolean useSaveInstanceState = true;
+    @Bean
+    EpisodeListAdapter adapter;
 
-    private ListAdapter<Episode> adapter;
+    private boolean useSaveInstanceState = true;
 
     private List<Episode> episodes = new ArrayList<>();
 
@@ -63,7 +64,6 @@ public class TvShowFragment extends Fragment implements TvShowPresenter.View {
         header_tv_show_episodes = (TextView) LayoutInflater.from(getActivity())
                 .inflate(R.layout.header_tv_show_episodes, null);
         lv_episodes.addHeaderView(header_tv_show_episodes);
-        adapter = new ListAdapter<>(episodes, new EpisodeRenderer());
         lv_episodes.setAdapter(adapter);
     }
 

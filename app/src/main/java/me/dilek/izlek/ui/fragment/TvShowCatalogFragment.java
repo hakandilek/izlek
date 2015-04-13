@@ -9,6 +9,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
@@ -17,7 +18,7 @@ import java.util.Collection;
 import me.dilek.izlek.R;
 import me.dilek.izlek.domain.TvShow;
 import me.dilek.izlek.ui.presenter.TvShowCatalogPresenter;
-import me.dilek.izlek.ui.renderer.TvShowRenderer;
+import me.dilek.izlek.ui.view.TvShowListAdapter;
 import me.dilek.izlek.util.ToastUtils;
 
 @EFragment(R.layout.fragment_tv_shows)
@@ -28,6 +29,9 @@ public class TvShowCatalogFragment extends Fragment implements TvShowCatalogPres
     @Bean
     TvShowCatalogPresenter tvShowCatalogPresenter;
 
+    @Bean
+    TvShowListAdapter adapter;
+
     @ViewById
     ProgressBar pb_loading;
 
@@ -37,15 +41,12 @@ public class TvShowCatalogFragment extends Fragment implements TvShowCatalogPres
     @ViewById
     View v_empty_case;
 
-    @Bean
-    TvShowRenderer renderer;
-
-    private ListAdapter<TvShow> adapter;
-
     @AfterViews
     @Background
     public void initialize() {
-        initializeGridView();
+        // initialize GridView
+        gv_tv_shows.setAdapter(adapter);
+        // initialize presenter
         tvShowCatalogPresenter.setView(this);
         tvShowCatalogPresenter.initialize();
     }
@@ -103,10 +104,9 @@ public class TvShowCatalogFragment extends Fragment implements TvShowCatalogPres
         return adapter.getCount() > 0;
     }
 
-    @UiThread
-    void initializeGridView() {
-        adapter = new ListAdapter<>(renderer);
-        gv_tv_shows.setAdapter(adapter);
+    @ItemClick(R.id.gv_tv_shows)
+    void onItemClicked(TvShow item) {
+        tvShowCatalogPresenter.onTvShowThumbnailClicked(item);
     }
 
     /* TODO: resume/pause

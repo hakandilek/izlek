@@ -1,4 +1,4 @@
-package me.dilek.izlek.ui.fragment;
+package me.dilek.izlek.ui.view;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,26 +8,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import me.dilek.izlek.ui.renderer.AbstractRenderer;
-
 /**
  * Generic list adapter
  * <p/>
  * Created by Hakan Dilek on 12.04.15.
  */
-public class ListAdapter<E> extends BaseAdapter {
-    private List<E> list;
-    private AbstractRenderer<E> renderer;
+public abstract class AbstractListAdapter<E> extends BaseAdapter {
 
-    public ListAdapter(Collection<E> items, AbstractRenderer<E> renderer) {
-        this.renderer = renderer;
-        this.list = new ArrayList<>(items);
-    }
-
-    public ListAdapter(AbstractRenderer<E> renderer) {
-        this.renderer = renderer;
-        this.list = new ArrayList<>();
-    }
+    private List<E> list = new ArrayList<>();
 
     @Override
     public int getCount() {
@@ -46,9 +34,21 @@ public class ListAdapter<E> extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        E item = list.get(position);
-        return renderer.render(item, convertView, parent);
+
+        AbstractItemView<E> itemView;
+        if (convertView == null) {
+            itemView = getItemView();
+        } else {
+            itemView = (AbstractItemView<E>) convertView;
+        }
+
+        E item = (E) getItem(position);
+        itemView.bind(item);
+
+        return itemView;
     }
+
+    protected abstract AbstractItemView<E> getItemView();
 
     public void clear() {
         list.clear();
