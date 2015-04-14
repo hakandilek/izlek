@@ -30,7 +30,6 @@ public class TvShowDraggableFragment extends TvShowFragment implements TvShowPre
         initializeDraggableView();
     }
 
-    @UiThread
     void initializeDraggableView() {
         draggable_view.post(new Runnable() {
             @Override

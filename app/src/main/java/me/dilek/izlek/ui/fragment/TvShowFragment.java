@@ -38,8 +38,6 @@ public class TvShowFragment extends Fragment implements TvShowPresenter.View {
 
     private boolean useSaveInstanceState = true;
 
-    private List<Episode> episodes = new ArrayList<>();
-
     @ViewById
     ImageView iv_fan_art;
     @ViewById
@@ -59,7 +57,6 @@ public class TvShowFragment extends Fragment implements TvShowPresenter.View {
         initializeListView();
     }
 
-    @UiThread
     void initializeListView() {
         header_tv_show_episodes = (TextView) LayoutInflater.from(getActivity())
                 .inflate(R.layout.header_tv_show_episodes, null);
@@ -111,8 +108,8 @@ public class TvShowFragment extends Fragment implements TvShowPresenter.View {
 
     @Override
     public void showEpisodes(final Set<Episode> episodes) {
-        this.episodes.clear();
-        this.episodes.addAll(episodes);
+        adapter.clear();
+        adapter.addAll(episodes);
         adapter.notifyDataSetChanged();
     }
 
