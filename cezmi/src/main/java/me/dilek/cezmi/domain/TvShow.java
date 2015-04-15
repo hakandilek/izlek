@@ -1,4 +1,4 @@
-package me.dilek.izlek.domain;
+package me.dilek.cezmi.domain;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

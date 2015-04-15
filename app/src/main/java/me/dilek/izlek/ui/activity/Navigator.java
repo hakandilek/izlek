@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentManager;
 import org.androidannotations.annotations.EBean;
 
 import me.dilek.izlek.R;
-import me.dilek.izlek.domain.TvShow;
+import me.dilek.cezmi.domain.TvShow;
 import me.dilek.izlek.ui.fragment.TvShowDraggableFragment;
 import me.dilek.izlek.ui.fragment.TvShowFragment;
 

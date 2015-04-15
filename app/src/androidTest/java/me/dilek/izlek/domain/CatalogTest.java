@@ -8,6 +8,9 @@ import org.junit.runner.RunWith;
 
 import java.util.Iterator;
 
+import me.dilek.cezmi.domain.Episode;
+import me.dilek.cezmi.domain.TvShow;
+
 /**
  * Test case for catalogs
  * <p/>

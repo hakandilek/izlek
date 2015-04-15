@@ -7,8 +7,8 @@ import org.androidannotations.annotations.UiThread;
 import java.util.Set;
 
 import me.dilek.izlek.domain.Catalog;
-import me.dilek.izlek.domain.Episode;
-import me.dilek.izlek.domain.TvShow;
+import me.dilek.cezmi.domain.Episode;
+import me.dilek.cezmi.domain.TvShow;
 import me.dilek.izlek.executor.LoadTask;
 import me.dilek.izlek.executor.TaskRunner;
 

@@ -6,6 +6,9 @@ import org.androidannotations.annotations.EBean.Scope;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import me.dilek.cezmi.domain.TvShow;
+import me.dilek.cezmi.domain.TvShowNotFoundException;
+
 @EBean(scope = Scope.Singleton)
 public class Catalog {
 

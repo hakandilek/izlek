@@ -7,7 +7,7 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import me.dilek.izlek.R;
-import me.dilek.izlek.domain.Episode;
+import me.dilek.cezmi.domain.Episode;
 
 /**
  * Renderer for an episode

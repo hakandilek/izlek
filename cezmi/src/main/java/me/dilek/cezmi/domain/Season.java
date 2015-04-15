@@ -1,4 +1,4 @@
-package me.dilek.izlek.domain;
+package me.dilek.cezmi.domain;
 
 public class Season {
 

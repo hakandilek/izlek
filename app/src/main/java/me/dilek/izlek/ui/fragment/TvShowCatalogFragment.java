@@ -16,7 +16,7 @@ import org.androidannotations.annotations.ViewById;
 import java.util.Collection;
 
 import me.dilek.izlek.R;
-import me.dilek.izlek.domain.TvShow;
+import me.dilek.cezmi.domain.TvShow;
 import me.dilek.izlek.ui.presenter.TvShowCatalogPresenter;
 import me.dilek.izlek.ui.view.TvShowListAdapter;
 import me.dilek.izlek.util.ToastUtils;

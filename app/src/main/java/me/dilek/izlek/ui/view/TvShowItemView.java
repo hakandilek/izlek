@@ -10,7 +10,7 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import me.dilek.izlek.R;
-import me.dilek.izlek.domain.TvShow;
+import me.dilek.cezmi.domain.TvShow;
 
 /**
  * Renderer for a TV show

@@ -5,7 +5,7 @@ import android.content.Context;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 
-import me.dilek.izlek.domain.TvShow;
+import me.dilek.cezmi.domain.TvShow;
 
 /**
  * @author Hakan Dilek on 13.04.2015.

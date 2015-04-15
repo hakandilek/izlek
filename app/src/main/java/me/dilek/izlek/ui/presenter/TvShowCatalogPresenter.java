@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import me.dilek.izlek.domain.Catalog;
-import me.dilek.izlek.domain.TvShow;
+import me.dilek.cezmi.domain.TvShow;
 import me.dilek.izlek.executor.LoadTask;
 import me.dilek.izlek.executor.TaskRunner;
 import me.dilek.izlek.ui.activity.Navigator;
