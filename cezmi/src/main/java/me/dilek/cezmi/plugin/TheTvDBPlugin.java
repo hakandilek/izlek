@@ -37,12 +37,15 @@ public class TheTvDBPlugin {
         String id = findId(name, year);
         if (StringTools.isNotEmpty(id)) {
             Series series = tvDb.getSeries(id, DEFAULT_LANG);
-            result.setTitle(series.getSeriesName());
-            result.setPoster(series.getPoster());
-            result.setFanArt(series.getBanner());
-            List<Episode> episodes = tvDb.getAllEpisodes(id, DEFAULT_LANG);
-            for (Episode ep : episodes) {
-                result.addEpisode(ep.getSeasonNumber(), ep.getEpisodeNumber(), ep.getEpisodeName(), ep.getFirstAired());
+            if (series != null) {
+                result = new TvShow();
+                result.setTitle(series.getSeriesName());
+                result.setPoster(series.getPoster());
+                result.setFanArt(series.getBanner());
+                List<Episode> episodes = tvDb.getAllEpisodes(id, DEFAULT_LANG);
+                for (Episode ep : episodes) {
+                    result.addEpisode(ep.getSeasonNumber(), ep.getEpisodeNumber(), ep.getEpisodeName(), ep.getFirstAired());
+                }
             }
         }
         return result;
