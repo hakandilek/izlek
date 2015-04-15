@@ -29,6 +29,7 @@
     <orderEntry type="library" exported="" name="cling-core-2.0.1" level="project" />
     <orderEntry type="library" exported="" name="thetvdbapi-1.7" level="project" />
     <orderEntry type="library" exported="" name="guice-3.0" level="project" />
+    <orderEntry type="library" exported="" name="datetime-3.0.1" level="project" />
     <orderEntry type="library" exported="" name="seamless-util-1.1.0" level="project" />
     <orderEntry type="library" exported="" name="seamless-http-1.1.0" level="project" />
     <orderEntry type="library" exported="" name="seamless-xml-1.1.0" level="project" />
