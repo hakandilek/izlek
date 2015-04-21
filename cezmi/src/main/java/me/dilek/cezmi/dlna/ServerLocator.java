@@ -2,6 +2,7 @@ package me.dilek.cezmi.dlna;
 
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.UpnpServiceImpl;
+import org.fourthline.cling.controlpoint.ControlPoint;
 import org.fourthline.cling.model.meta.RemoteDevice;
 import org.fourthline.cling.registry.DefaultRegistryListener;
 import org.fourthline.cling.registry.Registry;
@@ -73,13 +74,19 @@ public class ServerLocator extends DefaultRegistryListener implements ServerObse
         }
     }
 
-
     public static final void main(String[] args) throws InterruptedException {
 
         // This will create necessary network resources for UPnP right away
         System.out.println("Starting Cling...");
         ServerLocator locator = new ServerLocator();
-        locator.addServerObserver(new ServerObserver() {
+        UpnpService upnpService = new UpnpServiceImpl(locator);
+
+        // Send a search message to all devices and services, they should respond soon
+        ControlPoint controlPoint = upnpService.getControlPoint();
+
+        final ContentScanner contentScanner = new ContentScanner(controlPoint);
+        contentScanner.addContentObserver(new ContentPrinter());
+        ServerObserver serverObserver = new ServerObserver() {
             @Override
             public void serverRemoved(DlnaServer server) {
                 System.out.println("server rmv = " + server);
@@ -88,12 +95,13 @@ public class ServerLocator extends DefaultRegistryListener implements ServerObse
             @Override
             public void serverAdded(DlnaServer server) {
                 System.out.println("server add = " + server);
+                contentScanner.scan(server);
             }
-        });
-        UpnpService upnpService = new UpnpServiceImpl(locator);
+        };
+        locator.addServerObserver(serverObserver);
 
-        // Send a search message to all devices and services, they should respond soon
-        upnpService.getControlPoint().search();
+        //start search
+        controlPoint.search();
 
         // Let's wait 10 seconds for them to respond
         System.out.println("Waiting 10 seconds before shutting down...");

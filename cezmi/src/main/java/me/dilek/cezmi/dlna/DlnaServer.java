@@ -1,5 +1,6 @@
 package me.dilek.cezmi.dlna;
 
+import org.fourthline.cling.model.meta.Device;
 import org.fourthline.cling.model.meta.DeviceIdentity;
 import org.fourthline.cling.model.meta.RemoteDevice;
 
@@ -8,9 +9,11 @@ import org.fourthline.cling.model.meta.RemoteDevice;
  */
 public class DlnaServer {
     private final DeviceIdentity identity;
+    private Device device;
 
     public DlnaServer(RemoteDevice device) {
-        identity = device.getIdentity();
+        this.device = device;
+        this.identity = device.getIdentity();
     }
 
     @Override
@@ -36,5 +39,9 @@ public class DlnaServer {
         sb.append("identity=").append(identity);
         sb.append('}');
         return sb.toString();
+    }
+
+    public Device getDevice() {
+        return device;
     }
 }
