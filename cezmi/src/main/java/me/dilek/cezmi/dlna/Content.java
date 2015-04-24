@@ -11,7 +11,6 @@ public class Content {
     private DIDLContent didl;
 
     public Content(String directoryId, String parentId, DIDLContent didl) {
-
         this.directoryId = directoryId;
         this.parentId = parentId;
         this.didl = didl;
