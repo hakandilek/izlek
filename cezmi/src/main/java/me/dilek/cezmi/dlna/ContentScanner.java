@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Content scanner, scans content on a dlna server.
+ *
  * Created by Hakan Dilek on 14.04.15.
  */
 public class ContentScanner {
@@ -34,21 +36,17 @@ public class ContentScanner {
             observers.add(o);
     }
 
-    public void removeContentObserver(ContentObserver o) {
-        if (o != this)
-            observers.remove(o);
-    }
-
     public void scan(DlnaServer server) {
         Device device = server.getDevice();
         Service contentService = device.findService(new UDAServiceType("ContentDirectory"));
         if (contentService != null) {
             System.out.println("contentService = " + contentService);
-            browse(contentService, "", "0");
+            ContentPath rootPath = ContentPath.createRoot();
+            browse(contentService, rootPath, "0");
         }
     }
 
-    private void browse(final Service service, final String path, final String directoryId) {
+    private void browse(final Service service, final ContentPath path, final String directoryId) {
         Browse browse = new Browse(service, directoryId, BrowseFlag.DIRECT_CHILDREN, "*", 0, null, new SortCriterion(true, "dc:title")) {
             @Override
             public void received(ActionInvocation actionInvocation, DIDLContent content) {
@@ -59,7 +57,9 @@ public class ContentScanner {
                 List<Container> containers = content.getContainers();
                 for (Container container : containers) {
                     notifyContainerFound(path, container);
-                    browse(service, path + "/" + container.getTitle(), container.getId());
+                    String containerId = container.getId();
+                    String containerTitle = container.getTitle();
+                    browse(service, path.append(containerId, containerTitle), containerId);
                 }
             }
 
@@ -76,13 +76,13 @@ public class ContentScanner {
         controlPoint.execute(browse);
     }
 
-    private void notifyContainerFound(String path, Container container) {
+    private void notifyContainerFound(ContentPath path, Container container) {
         for (ContentObserver observer : observers) {
-            observer.containerBrowsed(path, container);
+            observer.containerFound(path, container);
         }
     }
 
-    private void notifyItemFound(String path, Item item) {
+    private void notifyItemFound(ContentPath path, Item item) {
         for (ContentObserver observer : observers) {
             observer.itemFound(path, item);
         }

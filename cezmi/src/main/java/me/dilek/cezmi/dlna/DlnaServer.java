@@ -5,6 +5,8 @@ import org.fourthline.cling.model.meta.DeviceIdentity;
 import org.fourthline.cling.model.meta.RemoteDevice;
 
 /**
+ * DLNA Server
+ *
  * Created by Hakan Dilek on 19.04.15.
  */
 public class DlnaServer {
@@ -35,7 +37,7 @@ public class DlnaServer {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("DlnaServer{");
+        final StringBuilder sb = new StringBuilder("DlnaServer{");
         sb.append("identity=").append(identity);
         sb.append('}');
         return sb.toString();
