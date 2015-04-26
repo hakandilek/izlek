@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * Content scanner, scans content on a dlna server.
- *
+ * <p/>
  * Created by Hakan Dilek on 14.04.15.
  */
 public class ContentScanner {
@@ -88,4 +88,7 @@ public class ContentScanner {
         }
     }
 
+    public void clear() {
+        observers.clear();
+    }
 }

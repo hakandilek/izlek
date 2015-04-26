@@ -84,20 +84,9 @@ public class ServerLocator extends DefaultRegistryListener implements ServerObse
         // Send a search message to all devices and services, they should respond soon
         ControlPoint controlPoint = upnpService.getControlPoint();
 
-        final ContentScanner contentScanner = new ContentScanner(controlPoint);
-        contentScanner.addContentObserver(new ContentPrinter());
-        ServerObserver serverObserver = new ServerObserver() {
-            @Override
-            public void serverRemoved(DlnaServer server) {
-                System.out.println("server rmv = " + server);
-            }
-
-            @Override
-            public void serverAdded(DlnaServer server) {
-                System.out.println("server add = " + server);
-                contentScanner.scan(server);
-            }
-        };
+        ServerContentScanner serverObserver = new ServerContentScanner(controlPoint);
+        ContentScanner contentScanner = serverObserver.getContentScanner();
+        contentScanner.addContentObserver(new VideoPrinter());
         locator.addServerObserver(serverObserver);
 
         //start search
