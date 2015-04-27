@@ -7,7 +7,7 @@ import java.util.List;
  * Created by Hakan Dilek on 27.04.15.
  */
 public interface VideoFileRepository {
-    VideoFile find(String serverKey, String parentKey, String id);
+    VideoFile find(String server, String parentKey, String serverKey);
 
     VideoFile save(VideoFile file, List<String> serverKeyPath);
 }

@@ -17,7 +17,7 @@ public class VideoFile {
     @DatabaseField(generatedId = true)
     private Integer key;
 
-    @DatabaseField
+    @DatabaseField(indexName = "idx_server_file")
     private String serverKey;
 
     @DatabaseField
@@ -26,10 +26,10 @@ public class VideoFile {
     @DatabaseField
     private String filename;
 
-    @DatabaseField
+    @DatabaseField(indexName = "idx_server_file")
     private String server;
 
-    @DatabaseField
+    @DatabaseField(indexName = "idx_server_file")
     private String parentKey;
 
     @DatabaseField(dataType = DataType.DATE_TIME)
