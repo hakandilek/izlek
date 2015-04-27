@@ -6,4 +6,5 @@ dependencies {
     compile "com.omertron:thetvdbapi:1.7"
     compile "com.google.inject:guice:3.0"
     compile "org.pojava:datetime:3.0.1"
+    compile "com.j256.ormlite:ormlite-core:4.48"
 }

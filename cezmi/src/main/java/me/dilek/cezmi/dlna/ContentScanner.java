@@ -41,7 +41,7 @@ public class ContentScanner {
         Service contentService = device.findService(new UDAServiceType("ContentDirectory"));
         if (contentService != null) {
             System.out.println("contentService = " + contentService);
-            ContentPath rootPath = ContentPath.createRoot();
+            ContentPath rootPath = ContentPath.createRoot(server.getDeviceUdn());
             browse(contentService, rootPath, "0");
         }
     }

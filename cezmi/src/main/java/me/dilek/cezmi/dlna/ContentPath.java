@@ -12,14 +12,16 @@ public class ContentPath {
     private final StringBuilder namePath;
 
     private final List<String> idPath;
+    private final String server;
 
-    private ContentPath() {
-        idPath = new ArrayList<>();
-        namePath = new StringBuilder();
+    private ContentPath(String server) {
+        this.server = server;
+        this.idPath = new ArrayList<>();
+        this.namePath = new StringBuilder();
     }
 
-    public static ContentPath createRoot() {
-        return new ContentPath();
+    public static ContentPath createRoot(String server) {
+        return new ContentPath(server);
     }
 
     public ContentPath append(String id, String name) {
@@ -36,6 +38,10 @@ public class ContentPath {
         return idPath;
     }
 
+    public String getServer() {
+        return server;
+    }
+
     @Override
     public String toString() {
         return namePath.toString();
@@ -48,13 +54,18 @@ public class ContentPath {
 
         ContentPath that = (ContentPath) o;
 
-        return idPath.equals(that.idPath) && namePath.equals(that.namePath);
+        if (!idPath.equals(that.idPath)) return false;
+        if (!namePath.equals(that.namePath)) return false;
+        if (!server.equals(that.server)) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
         int result = namePath.hashCode();
         result = 31 * result + idPath.hashCode();
+        result = 31 * result + server.hashCode();
         return result;
     }
 }

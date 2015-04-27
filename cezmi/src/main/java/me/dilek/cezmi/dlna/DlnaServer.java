@@ -3,10 +3,11 @@ package me.dilek.cezmi.dlna;
 import org.fourthline.cling.model.meta.Device;
 import org.fourthline.cling.model.meta.DeviceIdentity;
 import org.fourthline.cling.model.meta.RemoteDevice;
+import org.fourthline.cling.model.types.UDN;
 
 /**
  * DLNA Server
- *
+ * <p/>
  * Created by Hakan Dilek on 19.04.15.
  */
 public class DlnaServer {
@@ -45,5 +46,10 @@ public class DlnaServer {
 
     public Device getDevice() {
         return device;
+    }
+
+    public String getDeviceUdn() {
+        UDN udn = identity.getUdn();
+        return udn.toString();
     }
 }
