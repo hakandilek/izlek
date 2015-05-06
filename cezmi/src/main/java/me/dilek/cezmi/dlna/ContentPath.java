@@ -15,9 +15,13 @@ public class ContentPath {
     private final String server;
 
     private ContentPath(String server) {
+        this(server, new ArrayList<String>(), new StringBuilder());
+    }
+
+    private ContentPath(String server, List<String> idPath, StringBuilder namePath) {
         this.server = server;
-        this.idPath = new ArrayList<>();
-        this.namePath = new StringBuilder();
+        this.idPath = idPath;
+        this.namePath = namePath;
     }
 
     public static ContentPath createRoot(String server) {
@@ -25,9 +29,10 @@ public class ContentPath {
     }
 
     public ContentPath append(String id, String name) {
-        namePath.append("/").append(name);
-        idPath.add(id);
-        return this;
+        ContentPath cp = new ContentPath(server, idPath, namePath);
+        cp.idPath.add(id);
+        cp.namePath.append("/").append(name);
+        return cp;
     }
 
     public String getNamePath() {

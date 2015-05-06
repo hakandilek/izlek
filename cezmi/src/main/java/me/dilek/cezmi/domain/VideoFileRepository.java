@@ -10,4 +10,6 @@ public interface VideoFileRepository {
     VideoFile find(String server, String parentKey, String serverKey);
 
     VideoFile save(VideoFile file, List<String> serverKeyPath);
+
+    void shutdown();
 }

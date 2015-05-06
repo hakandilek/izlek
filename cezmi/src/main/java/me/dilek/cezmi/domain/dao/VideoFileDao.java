@@ -30,7 +30,7 @@ public class VideoFileDao implements VideoFileRepository {
     @Override
     public VideoFile find(String server, String parentKey, String serverKey) {
         try {
-            PreparedQuery<VideoFile> query = queryBuilder.where().eq("server", server).eq("parentKey", parentKey).eq("serverKey", serverKey).prepare();
+            PreparedQuery<VideoFile> query = queryBuilder.where().eq("server", server).and().eq("parentKey", parentKey).and().eq("serverKey", serverKey).prepare();
             return dao.queryForFirst(query);
         } catch (SQLException e) {
             //TODO: log exception
@@ -48,6 +48,19 @@ public class VideoFileDao implements VideoFileRepository {
             //TODO: log exception
             e.printStackTrace();
         }
-        return null;
+        return file;
+    }
+
+    @Override
+    public void shutdown() {
+        ConnectionSource connectionSource = dao.getConnectionSource();
+        if (connectionSource != null && connectionSource.isOpen()) {
+            try {
+                connectionSource.close();
+            } catch (SQLException e) {
+                //TODO: log exception
+                e.printStackTrace();
+            }
+        }
     }
 }

@@ -12,4 +12,6 @@ public interface ContentObserver {
     void itemFound(ContentPath path, Item item);
 
     void containerFound(ContentPath path, Container container);
+
+    void shutdown();
 }

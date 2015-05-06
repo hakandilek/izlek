@@ -5,7 +5,7 @@ import com.omertron.thetvdbapi.model.Episode;
 import com.omertron.thetvdbapi.model.Series;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import org.pojava.datetime.DateTime;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yamj.api.common.http.CommonHttpClient;

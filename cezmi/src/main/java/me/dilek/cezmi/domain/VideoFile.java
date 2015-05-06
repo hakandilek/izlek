@@ -1,5 +1,7 @@
 package me.dilek.cezmi.domain;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -20,10 +22,10 @@ public class VideoFile {
     @DatabaseField(indexName = "idx_server_file")
     private String serverKey;
 
-    @DatabaseField
+    @DatabaseField(dataType = DataType.LONG_STRING, width = 2048)
     private String serverPath;
 
-    @DatabaseField
+    @DatabaseField(dataType = DataType.LONG_STRING, width = 2048)
     private String filename;
 
     @DatabaseField(indexName = "idx_server_file")
@@ -32,11 +34,14 @@ public class VideoFile {
     @DatabaseField(indexName = "idx_server_file")
     private String parentKey;
 
-    @DatabaseField(dataType = DataType.DATE_TIME)
-    private Date created;
+    @DatabaseField
+    private long created;
 
-    @DatabaseField(dataType = DataType.DATE_TIME)
-    private Date updated;
+    @DatabaseField
+    private long updated;
+
+    public VideoFile() {
+    }
 
     public VideoFile(String server, String parentKey, String serverKey, String filename, String serverPath, Date created, Date updated) {
         this.server = server;
@@ -44,8 +49,8 @@ public class VideoFile {
         this.serverKey = serverKey;
         this.filename = filename;
         this.serverPath = serverPath;
-        this.created = created;
-        this.updated = updated;
+        this.created = created != null ? created.getTime() : 0;
+        this.updated = updated != null ? updated.getTime() : 0;
     }
 
     public Integer getKey() {
@@ -96,38 +101,56 @@ public class VideoFile {
         this.parentKey = parentKey;
     }
 
-    public Date getCreated() {
+    public long getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(long created) {
         this.created = created;
     }
 
-    public Date getUpdated() {
+    public long getUpdated() {
         return updated;
     }
 
-    public void setUpdated(Date updated) {
+    public void setUpdated(long updated) {
         this.updated = updated;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created != null ? created.getTime() : 0;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated != null ? updated.getTime() : 0;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof VideoFile)) return false;
-
         VideoFile videoFile = (VideoFile) o;
-
-        if (!key.equals(videoFile.key)) return false;
-
-        return true;
+        return Objects.equal(key, videoFile.key) &&
+                Objects.equal(serverKey, videoFile.serverKey) &&
+                Objects.equal(server, videoFile.server) &&
+                Objects.equal(parentKey, videoFile.parentKey);
     }
 
     @Override
     public int hashCode() {
-        return key.hashCode();
+        return Objects.hashCode(key, serverKey, server, parentKey);
     }
 
-
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("key", key)
+                .add("server", server)
+                .add("parentKey", parentKey)
+                .add("serverKey", serverKey)
+                .add("filename", filename)
+                .add("created", created)
+                .add("updated", updated)
+                .toString();
+    }
 }
