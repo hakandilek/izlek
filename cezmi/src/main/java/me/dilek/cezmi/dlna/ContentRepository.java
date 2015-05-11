@@ -50,6 +50,7 @@ public class ContentRepository {
     }
 
     public ContentRepository search() {
+        contentScanner.start();
         lastActive = activeThreadCount();
         System.out.println("lastActive = " + lastActive);
         controlPoint.search();

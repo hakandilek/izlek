@@ -10,8 +10,12 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import me.dilek.cezmi.domain.FileScan;
+import me.dilek.cezmi.domain.FileScanItem;
+import me.dilek.cezmi.domain.FileScanRepository;
 import me.dilek.cezmi.domain.VideoFile;
 import me.dilek.cezmi.domain.VideoFileRepository;
+import me.dilek.cezmi.domain.dao.FileScanDao;
 import me.dilek.cezmi.domain.dao.VideoFileDao;
 
 /**
@@ -21,25 +25,29 @@ import me.dilek.cezmi.domain.dao.VideoFileDao;
  */
 public class VideoCollector extends VideoObserver {
 
-    private VideoFileRepository repository;
+    private final VideoFileRepository fileRepository;
+    private final FileScanRepository scanRepository;
+    private FileScan fileScan;
 
-    public VideoCollector(VideoFileRepository repository) throws SQLException {
-        this.repository = repository;
+    public VideoCollector(VideoFileRepository fileRepository, FileScanRepository scanRepository) throws SQLException {
+        this.fileRepository = fileRepository;
+        this.scanRepository = scanRepository;
     }
 
     public static VideoCollector forCommon() throws VideoCollectorCreatingException {
         try {
             ConnectionSource cs = new JdbcConnectionSource("jdbc:h2:./cezmi");
             prepareSchema(cs);
-            VideoFileRepository repo = new VideoFileDao(cs);
-            return new VideoCollector(repo);
+            VideoFileRepository fileRepository = new VideoFileDao(cs);
+            FileScanRepository fileScanRepository = new FileScanDao(cs);
+            return new VideoCollector(fileRepository, fileScanRepository);
         } catch (SQLException e) {
             throw new VideoCollectorCreatingException(e);
         }
     }
 
     private static void prepareSchema(ConnectionSource cs) throws SQLException {
-        Class[] dataClasses = new Class[]{VideoFile.class};
+        Class[] dataClasses = new Class[]{VideoFile.class, FileScan.class, FileScanItem.class};
         for (Class dataClass : dataClasses) {
             TableUtils.createTableIfNotExists(cs, dataClass);
         }
@@ -53,21 +61,30 @@ public class VideoCollector extends VideoObserver {
         String server = path.getServer();
         List<String> serverKeyPath = path.getIdPath();
         String serverNamePath = path.getNamePath();
-
-        VideoFile file = repository.find(server, parentKey, serverKey);
         Date now = new Date();
+
+        Integer fileScanKey = fileScan.getKey();
+        FileScanItem scanItem = new FileScanItem(serverKey, serverNamePath, title, server, parentKey, fileScanKey, now.getTime());
+        VideoFile file = fileRepository.find(server, parentKey, serverKey);
         if (file == null) {
             file = new VideoFile(server, parentKey, serverKey, title, serverNamePath, now, now);
         } else {
             file.setUpdated(now);
         }
-        file = repository.save(file, serverKeyPath);
+        file = fileRepository.save(file, serverKeyPath);
+        scanItem.setVideoFileKey(file.getKey());
+        scanRepository.saveItem(scanItem);
+    }
 
-        System.out.println("saved file = " + file);
+    @Override
+    public void start() {
+        fileScan = scanRepository.createNewScan();
     }
 
     @Override
     public void shutdown() {
-        repository.shutdown();
+        fileScan = scanRepository.saveScan(fileScan);
+        fileRepository.shutdown();
+        scanRepository.shutdown();
     }
 }

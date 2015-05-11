@@ -18,8 +18,8 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.Set;
 
-import me.dilek.izlek.R;
 import me.dilek.cezmi.domain.Episode;
+import me.dilek.izlek.R;
 import me.dilek.izlek.ui.presenter.TvShowPresenter;
 import me.dilek.izlek.ui.view.EpisodeListAdapter;
 import me.dilek.izlek.util.ToastUtils;
@@ -139,7 +139,7 @@ public class TvShowFragment extends Fragment implements TvShowPresenter.View {
         showEmptyCase(false);
     }
 
-    /* TODO: save/restore state
+    /* TODO: saveItem/restore state
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

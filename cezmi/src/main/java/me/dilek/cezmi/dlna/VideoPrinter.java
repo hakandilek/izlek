@@ -28,6 +28,11 @@ public class VideoPrinter extends VideoObserver {
     }
 
     @Override
+    public void start() {
+        // start unnecessary
+    }
+
+    @Override
     public void shutdown() {
         // shutdown unnecessary
     }

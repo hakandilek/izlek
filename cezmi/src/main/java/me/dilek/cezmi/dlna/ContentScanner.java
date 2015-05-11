@@ -54,6 +54,14 @@ public class ContentScanner {
             observers.add(o);
     }
 
+    public void start() {
+        synchronized (observers) {
+            for (ContentObserver observer : observers) {
+                observer.start();
+            }
+        }
+    }
+
     public void scan(DlnaServer server) {
         Device device = server.getDevice();
         Service contentService = device.findService(new UDAServiceType("ContentDirectory"));
